@@ -36,8 +36,10 @@ wheels/
 
 # Raporlar ve Geçici Çıktılar
 *.csv
+!templates/*.csv
 *.xlsx
 rtm_report.csv
+rtm_dashboard.html
 multi_branch_rtm.csv
 
 # OS

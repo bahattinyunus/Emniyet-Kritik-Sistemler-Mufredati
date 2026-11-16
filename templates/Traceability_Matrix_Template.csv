@@ -1,0 +1,5 @@
+Hazard_ID,Safety_Objective,System_Req_ID,Derived_Flag,SW_High_Level_Req_ID,SW_Low_Level_Req_ID,Source_File,Source_Function,Test_Case_ID,Test_Type,Coverage_Type,Status
+[HAZ-FCC-01],Catastrophic (DAL A),[SYS-FCC-042],No,[HLR-ELEV-101],[LLR-ELEV-204],fcc_pitch_monitor.c,FCC_EvaluatePitchDiscrepancy,[UTEST-ELEV-088],Unit Test,MC/DC,VERIFIED
+[HAZ-FCC-01],Catastrophic (DAL A),[SYS-FCC-043],No,[HLR-ELEV-102],[LLR-ELEV-205],fcc_pitch_monitor.c,FCC_IsolateFailedActuator,[UTEST-ELEV-089],Unit Test,Decision,VERIFIED
+[HAZ-NAV-02],Hazardous (DAL B),[SYS-NAV-010],No,[HLR-NAV-055],[LLR-NAV-120],nav_manager.c,Nav_CheckSignalStatus,[UTEST-NAV-080],HIL Test,Branch,VERIFIED
+[HAZ-RTA-03],Catastrophic (DAL A),[SYS-RTA-01],Yes,[HLR-RTA-010],[LLR-RTA-010],rta_envelope.c,RTA_CheckSafetyEnvelope,[UTEST-RTA-001],Unit Test,MC/DC,VERIFIED

@@ -1,0 +1,42 @@
+name: 🛡️ Safety-Critical Verification & RTM CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  safety-audit:
+    name: Traceability Audit & MC/DC Verification
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Depoyu Klonla
+        uses: actions/checkout@v4
+
+      - name: 🐍 Python Ortamını Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 📦 Bağımlılıkları Yükle
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: 🔬 Örnek FCC Pitch Runaway MC/DC Testlerini Koştur
+        run: |
+          python examples/fcc-pitch-runaway/sim_pitch_monitor.py
+
+      - name: 📊 Çift Yönlü İzlenebilirlik Matrisi (RTM) Analizini Başlat
+        run: |
+          python scripts/rtm_generator.py --docs-dir . --output-csv rtm_report.csv --output-html rtm_dashboard.html
+
+      - name: 📤 RTM Raporlarını Arşivle
+        uses: actions/upload-artifact@v4
+        with:
+          name: safety-rtm-audit-artifacts
+          path: |
+            rtm_report.csv
+            rtm_dashboard.html
