@@ -8,7 +8,7 @@ on:
 
 jobs:
   safety-audit:
-    name: Traceability Audit & MC/DC Verification
+    name: Traceability, MISRA C, FTA & MC/DC Verification
     runs-on: ubuntu-latest
 
     steps:
@@ -25,9 +25,35 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: 🔬 Örnek FCC Pitch Runaway MC/DC Testlerini Koştur
+      - name: 🔬 Örnek 1 — FCC Pitch Runaway MC/DC Simülasyon Testleri
         run: |
           python examples/fcc-pitch-runaway/sim_pitch_monitor.py
+
+      - name: 🚁 Örnek 2 — ASTM F3269 RTA Simplex Otonom İHA Zarf Testleri
+        run: |
+          python examples/rta-simplex-drone/sim_rta_simplex.py
+
+      - name: ⚙️ C99 Hedef Kod Derleme & MC/DC Birim Testleri (GCC)
+        run: |
+          gcc -std=c99 -Wall -Wextra -Werror -Iexamples/fcc-pitch-runaway/include \
+              examples/fcc-pitch-runaway/src/fcc_pitch_monitor.c \
+              examples/fcc-pitch-runaway/tests/test_fcc_pitch_monitor.c \
+              -o test_fcc_pitch_monitor
+          ./test_fcc_pitch_monitor
+
+          gcc -std=c99 -Wall -Wextra -Werror -Iexamples/rta-simplex-drone/include \
+              examples/rta-simplex-drone/src/rta_simplex_monitor.c \
+              examples/rta-simplex-drone/tests/test_rta_simplex_monitor.c \
+              -o test_rta_simplex_monitor
+          ./test_rta_simplex_monitor
+
+      - name: 🛡️ MISRA C:2012 & DO-178C Statik Kod Uyum Denetimi
+        run: |
+          python scripts/misra_static_checker.py
+
+      - name: 📐 Nicel FTA (10^-9/FH) & Otomatik MC/DC Matematiksel Doğrulayıcı
+        run: |
+          python scripts/fta_mcdc_analyzer.py
 
       - name: 📊 Çift Yönlü İzlenebilirlik Matrisi (RTM) Analizini Başlat
         run: |
